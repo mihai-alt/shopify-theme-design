@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tickd Rewards - Your Points, Your Picks</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Inter:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="/css/theme.css">
+</head>
+<body>
+  <!-- ANNOUNCEMENT BAR: Will become sections/announcement-bar.liquid -->
+  <div class="announcement-bar">
+    <div class="container">
+      <p>You have <span class="highlight">2,450 pts</span> to spend. Treat yourself. You've earned it. Literally.</p>
+    </div>
+  </div>
+
+  <!-- HEADER: Will become sections/header.liquid -->
+  <header class="site-header">
+    <div class="container">
+      <nav class="nav">
+        <a href="/" class="logo">
+          <img src="/assets/images/mascot-happy.png" alt="Tick mascot" class="logo-icon">
+          <span>Tickd</span>
+        </a>
+
+        <ul class="nav-links">
+          <li><a href="/collection.html">All Rewards</a></li>
+          <li><a href="/collection.html">Tech</a></li>
+          <li><a href="/collection.html">Home & Living</a></li>
+          <li><a href="/collection.html">Experiences</a></li>
+        </ul>
+
+        <div class="nav-actions">
+          <div class="nav-points">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"></circle>
+              <path d="M12 6v6l4 2"></path>
+            </svg>
+            2,450 pts
+          </div>
+          <a href="/cart.html" class="cart-btn">
+            Cart
+            <span class="cart-count">2</span>
+          </a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <!-- HERO: Will become sections/hero.liquid -->
+    <section class="hero">
+      <div class="container" style="display: contents;">
+        <div class="hero-content">
+          <span class="hero-badge">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+            </svg>
+            Employee Rewards Program
+          </span>
+          <h1 class="hero-title">
+            Your hard work.<br>
+            <span class="highlight">Actually rewarded.</span>
+          </h1>
+          <p class="hero-subtitle">
+            No catch. No fine print. Just points you've earned and stuff you actually want. Revolutionary, we know.
+          </p>
+          <div class="hero-cta">
+            <a href="/collection.html" class="btn btn-primary btn-large">Browse Rewards</a>
+            <a href="#how-it-works" class="btn btn-ghost">How It Works</a>
+          </div>
+          <div class="hero-points-preview">
+            <div>
+              <p class="points-label">Your Balance</p>
+              <p class="points-value">2,450 pts</p>
+            </div>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--color-text-muted);">
+              <polyline points="9 18 15 12 9 6"></polyline>
+            </svg>
+          </div>
+        </div>
+        <div class="hero-media">
+          <div class="hero-decoration"></div>
+          <img src="/assets/images/mascot-waving.png" alt="Tick the clock mascot waving hello" class="hero-mascot">
+        </div>
+      </div>
+    </section>
+
+    <!-- FEATURED PRODUCTS: Will become sections/featured-collection.liquid -->
+    <section class="section">
+      <div class="container">
+        <div class="section-header">
+          <div>
+            <h2 class="section-title">New Arrivals</h2>
+            <p class="section-subtitle">Fresh picks, just added</p>
+          </div>
+          <a href="/collection.html" class="btn btn-secondary">View All</a>
+        </div>
+
+        <div class="product-grid">
+          <article class="product-card">
+            <a href="/product.html">
+              <div class="product-image">
+                <img src="https://images.unsplash.com/photo-1585386959984-a4155224a1ad?w=600&h=600&fit=crop" alt="Wireless Earbuds">
+              </div>
+              <div class="product-info">
+                <h3 class="product-title">Wireless Earbuds Pro</h3>
+                <p class="product-vendor">SoundWave</p>
+                <div class="product-price">
+                  <span class="product-points">850 pts</span>
+                </div>
+              </div>
+            </a>
+          </article>
+
+          <article class="product-card">
+            <a href="/product.html">
+              <div class="product-image">
+                <img src="https://images.unsplash.com/photo-1544947950-fa07a98d237f?w=600&h=600&fit=crop" alt="Premium Notebook Set">
+              </div>
+              <div class="product-info">
+                <h3 class="product-title">Premium Notebook Set</h3>
+                <p class="product-vendor">Moleskine</p>
+                <div class="product-price">
+                  <span class="product-points">320 pts</span>
+                </div>
+              </div>
+            </a>
+          </article>
+
+          <article class="product-card">
+            <a href="/product.html">
+              <div class="product-image">
+                <img src="https://images.unsplash.com/photo-1517256673644-36ad11246d21?w=600&h=600&fit=crop" alt="Insulated Water Bottle">
+              </div>
+              <div class="product-info">
+                <h3 class="product-title">Insulated Water Bottle</h3>
+                <p class="product-vendor">Hydro Co</p>
+                <div class="product-price">
+                  <span class="product-points">275 pts</span>
+                </div>
+              </div>
+            </a>
+          </article>
+
+          <article class="product-card">
+            <a href="/product.html">
+              <div class="product-image">
+                <img src="https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?w=600&h=600&fit=crop" alt="Comfort Sneakers">
+              </div>
+              <div class="product-info">
+                <h3 class="product-title">Comfort Sneakers</h3>
+                <p class="product-vendor">StepEasy</p>
+                <div class="product-price">
+                  <span class="product-points">1,200 pts</span>
+                  <span class="product-original">1,500 pts</span>
+                </div>
+              </div>
+            </a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- CATEGORIES: Will become sections/featured-categories.liquid -->
+    <section class="section section--tight" style="background: var(--color-surface);">
+      <div class="container">
+        <div class="section-header">
+          <div>
+            <h2 class="section-title">Shop by Category</h2>
+            <p class="section-subtitle">Find exactly what you're looking for</p>
+          </div>
+        </div>
+
+        <div class="category-grid">
+          <a href="/collection.html" class="category-card">
+            <img src="https://images.unsplash.com/photo-1498049794561-7780e7231661?w=800&h=600&fit=crop" alt="Tech & Electronics">
+            <div class="category-card-content">
+              <h3 class="category-card-title">Tech & Electronics</h3>
+              <span class="category-card-count">42 items</span>
+            </div>
+          </a>
+
+          <a href="/collection.html" class="category-card">
+            <img src="https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?w=800&h=600&fit=crop" alt="Home & Living">
+            <div class="category-card-content">
+              <h3 class="category-card-title">Home & Living</h3>
+              <span class="category-card-count">38 items</span>
+            </div>
+          </a>
+
+          <a href="/collection.html" class="category-card">
+            <img src="https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=800&h=600&fit=crop" alt="Wellness & Fitness">
+            <div class="category-card-content">
+              <h3 class="category-card-title">Wellness & Fitness</h3>
+              <span class="category-card-count">27 items</span>
+            </div>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- HOW IT WORKS: Will become sections/how-it-works.liquid -->
+    <section class="section" id="how-it-works">
+      <div class="container">
+        <div class="section-header" style="justify-content: center; text-align: center;">
+          <div>
+            <h2 class="section-title">How It Works</h2>
+            <p class="section-subtitle">It's almost suspiciously simple</p>
+          </div>
+        </div>
+
+        <div class="value-grid">
+          <div class="value-card">
+            <div class="value-icon">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"></circle>
+                <polyline points="12 6 12 12 16 14"></polyline>
+              </svg>
+            </div>
+            <h3 class="value-title">Earn Points</h3>
+            <p class="value-description">Do your job. Show up. Hit goals. Points appear. Magic? No, just competent HR software.</p>
+          </div>
+
+          <div class="value-card">
+            <div class="value-icon">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+                <line x1="3" y1="6" x2="21" y2="6"></line>
+                <path d="M16 10a4 4 0 0 1-8 0"></path>
+              </svg>
+            </div>
+            <h3 class="value-title">Pick Stuff</h3>
+            <p class="value-description">Browse actual good products. Not branded stress balls. Real things you'd actually buy yourself.</p>
+          </div>
+
+          <div class="value-card">
+            <div class="value-icon">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                <polyline points="22 4 12 14.01 9 11.01"></polyline>
+              </svg>
+            </div>
+            <h3 class="value-title">Get Rewarded</h3>
+            <p class="value-description">Redeem points. Stuff arrives. Feel appreciated. Tell your friends. Or don't. We're not your boss. Wait—</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- MORE PRODUCTS: Will become sections/featured-collection.liquid -->
+    <section class="section section--tight" style="background: var(--color-surface);">
+      <div class="container">
+        <div class="section-header">
+          <div>
+            <h2 class="section-title">Popular Picks</h2>
+            <p class="section-subtitle">What your coworkers are getting</p>
+          </div>
+          <a href="/collection.html" class="btn btn-secondary">View All</a>
+        </div>
+
+        <div class="product-grid">
+          <article class="product-card">
+            <a href="/product.html">
+              <div class="product-image">
+                <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=600&h=600&fit=crop" alt="Wireless Headphones">
+              </div>
+              <div class="product-info">
+                <h3 class="product-title">Wireless Headphones</h3>
+                <p class="product-vendor">AudioMax</p>
+                <div class="product-price">
+                  <span class="product-points">1,450 pts</span>
+                </div>
+              </div>
+            </a>
+          </article>
+
+          <article class="product-card">
+            <a href="/product.html">
+              <div class="product-image">
+                <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=600&h=600&fit=crop" alt="Smart Watch">
+              </div>
+              <div class="product-info">
+                <h3 class="product-title">Smart Watch</h3>
+                <p class="product-vendor">TechTime</p>
+                <div class="product-price">
+                  <span class="product-points">2,100 pts</span>
+                </div>
+              </div>
+            </a>
+          </article>
+
+          <article class="product-card">
+            <a href="/product.html">
+              <div class="product-image">
+                <img src="https://images.unsplash.com/photo-1608571423902-eed4a5ad8108?w=600&h=600&fit=crop" alt="Cozy Blanket">
+              </div>
+              <div class="product-info">
+                <h3 class="product-title">Premium Throw Blanket</h3>
+                <p class="product-vendor">ComfortCo</p>
+                <div class="product-price">
+                  <span class="product-points">420 pts</span>
+                </div>
+              </div>
+            </a>
+          </article>
+
+          <article class="product-card">
+            <a href="/product.html">
+              <div class="product-image">
+                <img src="https://images.unsplash.com/photo-1572635196237-14b3f281503f?w=600&h=600&fit=crop" alt="Sunglasses">
+              </div>
+              <div class="product-info">
+                <h3 class="product-title">Classic Sunglasses</h3>
+                <p class="product-vendor">ShadeStyle</p>
+                <div class="product-price">
+                  <span class="product-points">380 pts</span>
+                </div>
+              </div>
+            </a>
+          </article>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER: Will become sections/footer.liquid -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="footer-logo">
+            <img src="/assets/images/mascot-happy.png" alt="Tick mascot" class="footer-logo-icon">
+            <span class="footer-logo-text">Tickd Rewards</span>
+          </div>
+          <p class="footer-description">
+            Your company's way of saying "thanks for not quitting" with actual good stuff instead of pizza parties.
+          </p>
+        </div>
+
+        <div class="footer-column">
+          <h4>Shop</h4>
+          <ul class="footer-links">
+            <li><a href="/collection.html">All Rewards</a></li>
+            <li><a href="/collection.html">Tech & Electronics</a></li>
+            <li><a href="/collection.html">Home & Living</a></li>
+            <li><a href="/collection.html">Experiences</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-column">
+          <h4>Account</h4>
+          <ul class="footer-links">
+            <li><a href="#">My Points</a></li>
+            <li><a href="#">Order History</a></li>
+            <li><a href="#">Wishlist</a></li>
+            <li><a href="#">Settings</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-column">
+          <h4>Help</h4>
+          <ul class="footer-links">
+            <li><a href="#">FAQ</a></li>
+            <li><a href="#">Contact Support</a></li>
+            <li><a href="#">Shipping Info</a></li>
+            <li><a href="#">Returns</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p class="footer-copyright">© 2024 Tickd Rewards. All rights reserved. Yes, even the clock mascot.</p>
+        <div class="footer-legal">
+          <a href="#">Privacy Policy</a> · <a href="#">Terms of Service</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="/js/preview.js"></script>
+</body>
+</html>

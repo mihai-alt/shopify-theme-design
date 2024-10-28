@@ -1,0 +1,12 @@
+{
+  "name": "shopify-theme-design",
+  "version": "1.0.0",
+  "description": "Create distinctive, marketplace-quality Shopify themes with strong brand cohesion using a design-first Theme DNA approach",
+  "author": "Rodney",
+  "skills": [
+    {
+      "name": "shopify-theme-design",
+      "path": "skills/SKILL.md"
+    }
+  ]
+}

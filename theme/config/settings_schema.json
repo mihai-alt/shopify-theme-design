@@ -1,0 +1,180 @@
+[
+  {
+    "name": "theme_info",
+    "theme_name": "Mandatory Fun",
+    "theme_version": "1.0.0",
+    "theme_author": "Dropbox/GitHub/tickd",
+    "theme_documentation_url": "https://github.com/your-repo/mandatory-fun-theme",
+    "theme_support_url": "https://github.com/your-repo/mandatory-fun-theme/issues"
+  },
+  {
+    "name": "Colors",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Primary Colors"
+      },
+      {
+        "type": "color",
+        "id": "color_primary",
+        "label": "Primary (Institutional Black)",
+        "default": "#1a1a18",
+        "info": "Main text and borders"
+      },
+      {
+        "type": "color",
+        "id": "color_secondary",
+        "label": "Secondary",
+        "default": "#2c2c28",
+        "info": "Darker accent areas"
+      },
+      {
+        "type": "header",
+        "content": "Background Colors"
+      },
+      {
+        "type": "color",
+        "id": "color_background",
+        "label": "Background (Cream Stock)",
+        "default": "#f7f5f0",
+        "info": "Main page background"
+      },
+      {
+        "type": "color",
+        "id": "color_surface",
+        "label": "Surface (White Paper)",
+        "default": "#fffef9",
+        "info": "Cards and elevated elements"
+      },
+      {
+        "type": "header",
+        "content": "Text Colors"
+      },
+      {
+        "type": "color",
+        "id": "color_text",
+        "label": "Text",
+        "default": "#1a1a18",
+        "info": "Primary text color"
+      },
+      {
+        "type": "color",
+        "id": "color_text_muted",
+        "label": "Muted Text",
+        "default": "#6b6860",
+        "info": "Secondary text and labels"
+      },
+      {
+        "type": "header",
+        "content": "Accent Colors"
+      },
+      {
+        "type": "color",
+        "id": "color_accent",
+        "label": "Accent (Stamp Red)",
+        "default": "#c41e3a",
+        "info": "Buttons, badges, and highlights"
+      },
+      {
+        "type": "color",
+        "id": "color_sale",
+        "label": "Sale",
+        "default": "#c41e3a",
+        "info": "Sale prices and badges"
+      },
+      {
+        "type": "color",
+        "id": "color_highlight",
+        "label": "Highlight (Highlighter Yellow)",
+        "default": "#fff3cd",
+        "info": "Notice backgrounds"
+      },
+      {
+        "type": "header",
+        "content": "Border Colors"
+      },
+      {
+        "type": "color",
+        "id": "color_border",
+        "label": "Border (Light)",
+        "default": "#d4d0c8",
+        "info": "Subtle borders and dividers"
+      },
+      {
+        "type": "color",
+        "id": "color_border_dark",
+        "label": "Border (Dark)",
+        "default": "#1a1a18",
+        "info": "Strong borders"
+      }
+    ]
+  },
+  {
+    "name": "Typography",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "Mandatory Fun uses Courier Prime for headings (typewriter memo feel), IBM Plex Serif for body text, and IBM Plex Mono for prices and labels. These fonts are loaded from Google Fonts."
+      }
+    ]
+  },
+  {
+    "name": "Cart",
+    "settings": [
+      {
+        "type": "select",
+        "id": "cart_type",
+        "label": "Cart type",
+        "options": [
+          { "value": "page", "label": "Page" },
+          { "value": "drawer", "label": "Drawer" }
+        ],
+        "default": "page"
+      },
+      {
+        "type": "checkbox",
+        "id": "cart_notes_enable",
+        "label": "Enable order notes",
+        "default": true
+      }
+    ]
+  },
+  {
+    "name": "Social Media",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Social accounts"
+      },
+      {
+        "type": "text",
+        "id": "social_twitter_link",
+        "label": "Twitter",
+        "info": "https://twitter.com/yourhandle"
+      },
+      {
+        "type": "text",
+        "id": "social_instagram_link",
+        "label": "Instagram",
+        "info": "https://instagram.com/yourhandle"
+      },
+      {
+        "type": "text",
+        "id": "social_github_link",
+        "label": "GitHub",
+        "info": "https://github.com/yourorg"
+      }
+    ]
+  },
+  {
+    "name": "Favicon",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "favicon",
+        "label": "Favicon",
+        "info": "32x32px .png recommended"
+      }
+    ]
+  }
+]

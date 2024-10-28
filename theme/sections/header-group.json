@@ -1,0 +1,15 @@
+{
+  "type": "header",
+  "name": "Header group",
+  "sections": {
+    "header": {
+      "type": "header",
+      "settings": {
+        "logo_text": "MANDATORY FUN",
+        "logo_subtext": "Official Merchandise Distribution",
+        "cart_text": "Pending"
+      }
+    }
+  },
+  "order": ["header"]
+}

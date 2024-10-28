@@ -1,0 +1,606 @@
+{% comment %}
+  ABOUTME: Main cart template with line items and order summary
+  ABOUTME: Form 27-A requisition request styling
+{% endcomment %}
+
+<section class="cart-page">
+  <div class="cart-layout">
+    <div class="cart-main">
+      <header class="cart-header">
+        <p class="cart-meta">Form 27-A | Requisition Request | Status: Pending Review</p>
+        <h1 class="cart-title">{{ section.settings.title }}</h1>
+        <p class="cart-subtitle">{{ section.settings.subtitle }}</p>
+      </header>
+
+      {% if cart.item_count > 0 %}
+        <form action="{{ routes.cart_url }}" method="post" id="CartForm">
+          <div class="cart-items">
+            {% for item in cart.items %}
+              <div class="cart-item" data-line-item="{{ forloop.index }}">
+                <div class="cart-item-image">
+                  {% if item.image != blank %}
+                    <img
+                      src="{{ item.image | image_url: width: 200 }}"
+                      alt="{{ item.title }}"
+                      width="200"
+                      height="200"
+                      loading="lazy"
+                    >
+                  {% else %}
+                    {{ 'product-1' | placeholder_svg_tag }}
+                  {% endif %}
+                </div>
+
+                <div class="cart-item-details">
+                  <span class="cart-item-sku">SKU: {{ item.sku | default: item.product_id }}</span>
+                  <h3 class="cart-item-title">
+                    <a href="{{ item.url }}">{{ item.product.title }}</a>
+                  </h3>
+                  <p class="cart-item-variant">
+                    {% unless item.product.has_only_default_variant %}
+                      {{ item.variant.title }}
+                    {% endunless %}
+                  </p>
+
+                  <div class="cart-item-actions">
+                    <div class="cart-quantity">
+                      <button type="button" class="cart-quantity-btn" data-action="decrease" data-line="{{ forloop.index }}">−</button>
+                      <input
+                        type="number"
+                        name="updates[]"
+                        class="cart-quantity-value"
+                        value="{{ item.quantity }}"
+                        min="0"
+                        aria-label="Quantity"
+                        data-line="{{ forloop.index }}"
+                      >
+                      <button type="button" class="cart-quantity-btn" data-action="increase" data-line="{{ forloop.index }}">+</button>
+                    </div>
+                    <a href="{{ routes.cart_change_url }}?line={{ forloop.index }}&quantity=0" class="cart-item-remove">
+                      Remove from request
+                    </a>
+                  </div>
+                </div>
+
+                <div class="cart-item-right">
+                  <span class="cart-item-price">{{ item.price | money }}</span>
+                  <span class="cart-item-line-total">Line total: {{ item.line_price | money }}</span>
+                </div>
+              </div>
+            {% endfor %}
+          </div>
+
+          {% if settings.cart_notes_enable %}
+            <div class="cart-note">
+              <label class="cart-note-label" for="CartNote">Special Instructions (Optional)</label>
+              <textarea
+                class="cart-note-input"
+                id="CartNote"
+                name="note"
+                placeholder="{{ section.settings.note_placeholder }}"
+              >{{ cart.note }}</textarea>
+            </div>
+          {% endif %}
+        </form>
+      {% else %}
+        <div class="cart-empty">
+          <h2 class="cart-empty-title">{{ section.settings.empty_title }}</h2>
+          <p class="cart-empty-text">{{ section.settings.empty_text }}</p>
+          <a href="{{ routes.all_products_collection_url }}" class="btn btn-primary">
+            {{ section.settings.empty_button_text }}
+          </a>
+        </div>
+      {% endif %}
+    </div>
+
+    {% if cart.item_count > 0 %}
+      <div class="cart-summary">
+        <div class="summary-box">
+          <p class="summary-header">Requisition Summary | {{ cart.item_count }} {% if cart.item_count == 1 %}Item{% else %}Items{% endif %}</p>
+          <h2 class="summary-title">ORDER TOTAL</h2>
+
+          <div class="summary-row">
+            <span class="summary-label">Subtotal</span>
+            <span class="summary-value">{{ cart.total_price | money }}</span>
+          </div>
+
+          <div class="summary-row">
+            <span class="summary-label">Shipping</span>
+            <span class="summary-value">Calculated at checkout</span>
+          </div>
+
+          {% if cart.total_price >= section.settings.free_shipping_threshold %}
+            <div class="summary-shipping-note">
+              <strong>FREE SHIPPING</strong> — Order qualifies for complimentary expedited processing
+            </div>
+          {% else %}
+            <div class="summary-shipping-progress">
+              <p>Add {{ cart.total_price | minus: section.settings.free_shipping_threshold | abs | money }} more for free shipping</p>
+            </div>
+          {% endif %}
+
+          <div class="summary-divider"></div>
+
+          <div class="summary-row summary-total">
+            <span>Estimated Total</span>
+            <span class="summary-value">{{ cart.total_price | money }}</span>
+          </div>
+          <p class="summary-note">Tax calculated at checkout</p>
+
+          <div class="summary-actions">
+            <button type="submit" form="CartForm" name="checkout" class="btn btn-primary btn-checkout">
+              {{ section.settings.checkout_button_text }}
+            </button>
+            <a href="{{ routes.all_products_collection_url }}" class="btn btn-secondary btn-continue">
+              Continue Browsing
+            </a>
+          </div>
+
+          <p class="summary-legal">
+            {{ section.settings.legal_text }}
+          </p>
+        </div>
+      </div>
+    {% endif %}
+  </div>
+</section>
+
+{% style %}
+  .cart-page {
+    padding: var(--space-xl) 0 var(--space-2xl);
+  }
+
+  .cart-layout {
+    display: grid;
+    grid-template-columns: 1fr 400px;
+    gap: var(--space-2xl);
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 0 var(--space-lg);
+  }
+
+  .cart-header {
+    margin-bottom: var(--space-xl);
+  }
+
+  .cart-meta {
+    font-family: var(--font-accent);
+    font-size: 0.6875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--color-text-muted);
+    margin-bottom: var(--space-sm);
+  }
+
+  .cart-title {
+    font-family: var(--font-heading);
+    font-size: 2rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    margin-bottom: var(--space-xs);
+  }
+
+  .cart-subtitle {
+    color: var(--color-text-muted);
+    font-size: 0.9375rem;
+  }
+
+  .cart-items {
+    border-top: 2px solid var(--color-border-dark);
+  }
+
+  .cart-item {
+    display: grid;
+    grid-template-columns: 120px 1fr auto;
+    gap: var(--space-lg);
+    padding: var(--space-lg) 0;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .cart-item-image {
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    padding: var(--space-xs);
+  }
+
+  .cart-item-image img {
+    width: 100%;
+    aspect-ratio: 1;
+    object-fit: cover;
+  }
+
+  .cart-item-details {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .cart-item-sku {
+    font-family: var(--font-accent);
+    font-size: 0.625rem;
+    color: var(--color-text-muted);
+    letter-spacing: 0.1em;
+    margin-bottom: var(--space-xs);
+  }
+
+  .cart-item-title {
+    font-family: var(--font-heading);
+    font-size: 1rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    margin-bottom: var(--space-sm);
+  }
+
+  .cart-item-title a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .cart-item-title a:hover {
+    text-decoration: underline;
+  }
+
+  .cart-item-variant {
+    font-family: var(--font-accent);
+    font-size: 0.75rem;
+    color: var(--color-text-muted);
+    margin-bottom: auto;
+  }
+
+  .cart-item-actions {
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+    margin-top: var(--space-md);
+  }
+
+  .cart-item-remove {
+    font-family: var(--font-accent);
+    font-size: 0.6875rem;
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    transition: var(--transition-fast);
+    text-decoration: none;
+  }
+
+  .cart-item-remove:hover {
+    color: var(--color-accent);
+  }
+
+  .cart-item-right {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: space-between;
+  }
+
+  .cart-item-price {
+    font-family: var(--font-accent);
+    font-size: 1rem;
+    font-weight: 600;
+  }
+
+  .cart-item-line-total {
+    font-family: var(--font-accent);
+    font-size: 0.75rem;
+    color: var(--color-text-muted);
+  }
+
+  .cart-quantity {
+    display: flex;
+    align-items: center;
+    border: 1px solid var(--color-border);
+  }
+
+  .cart-quantity-btn {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    background: var(--color-surface);
+    border: none;
+    cursor: pointer;
+  }
+
+  .cart-quantity-btn:hover {
+    background-color: var(--color-background);
+  }
+
+  .cart-quantity-value {
+    width: 40px;
+    height: 32px;
+    text-align: center;
+    font-family: var(--font-accent);
+    font-size: 0.8125rem;
+    border: none;
+    border-left: 1px solid var(--color-border);
+    border-right: 1px solid var(--color-border);
+    background: var(--color-surface);
+  }
+
+  .cart-note {
+    margin-top: var(--space-xl);
+    padding-top: var(--space-lg);
+    border-top: 1px solid var(--color-border);
+  }
+
+  .cart-note-label {
+    font-family: var(--font-accent);
+    font-size: 0.6875rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-text-muted);
+    display: block;
+    margin-bottom: var(--space-sm);
+  }
+
+  .cart-note-input {
+    width: 100%;
+    min-height: 100px;
+    padding: var(--space-md);
+    font-family: var(--font-body);
+    font-size: 0.9375rem;
+    border: 1px solid var(--color-border);
+    background-color: var(--color-surface);
+    resize: vertical;
+  }
+
+  .cart-note-input:focus {
+    outline: none;
+    border-color: var(--color-border-dark);
+  }
+
+  .cart-summary {
+    position: sticky;
+    top: calc(var(--header-height) + var(--space-lg));
+    align-self: start;
+  }
+
+  .summary-box {
+    background-color: var(--color-surface);
+    border: 2px solid var(--color-border-dark);
+    padding: var(--space-lg);
+  }
+
+  .summary-header {
+    font-family: var(--font-accent);
+    font-size: 0.6875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--color-text-muted);
+    padding-bottom: var(--space-md);
+    border-bottom: 1px solid var(--color-border);
+    margin-bottom: var(--space-lg);
+  }
+
+  .summary-title {
+    font-family: var(--font-heading);
+    font-size: 1.25rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    margin-bottom: var(--space-lg);
+  }
+
+  .summary-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--space-sm) 0;
+    font-size: 0.9375rem;
+  }
+
+  .summary-label {
+    color: var(--color-text-muted);
+  }
+
+  .summary-value {
+    font-family: var(--font-accent);
+    font-weight: 500;
+  }
+
+  .summary-shipping-note {
+    background-color: var(--color-highlight);
+    padding: var(--space-sm) var(--space-md);
+    margin: var(--space-lg) 0;
+    font-family: var(--font-accent);
+    font-size: 0.75rem;
+  }
+
+  .summary-shipping-progress {
+    padding: var(--space-sm) 0;
+    font-family: var(--font-accent);
+    font-size: 0.75rem;
+    color: var(--color-text-muted);
+  }
+
+  .summary-divider {
+    border-top: 1px solid var(--color-border);
+    margin: var(--space-md) 0;
+  }
+
+  .summary-total {
+    font-size: 1.125rem;
+    font-weight: 600;
+  }
+
+  .summary-total .summary-value {
+    font-size: 1.25rem;
+  }
+
+  .summary-note {
+    font-family: var(--font-accent);
+    font-size: 0.6875rem;
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-top: var(--space-sm);
+    text-align: right;
+  }
+
+  .summary-actions {
+    margin-top: var(--space-lg);
+  }
+
+  .btn-checkout {
+    width: 100%;
+    padding: var(--space-md);
+    font-size: 1rem;
+    margin-bottom: var(--space-md);
+  }
+
+  .btn-continue {
+    width: 100%;
+    padding: var(--space-sm);
+    font-size: 0.8125rem;
+    text-align: center;
+  }
+
+  .summary-legal {
+    margin-top: var(--space-lg);
+    padding-top: var(--space-lg);
+    border-top: 1px solid var(--color-border);
+    font-family: var(--font-accent);
+    font-size: 0.6875rem;
+    color: var(--color-text-muted);
+    line-height: 1.6;
+  }
+
+  .cart-empty {
+    text-align: center;
+    padding: var(--space-2xl);
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+  }
+
+  .cart-empty-title {
+    font-size: 1.5rem;
+    margin-bottom: var(--space-md);
+  }
+
+  .cart-empty-text {
+    color: var(--color-text-muted);
+    margin-bottom: var(--space-xl);
+  }
+
+  @media (max-width: 1024px) {
+    .cart-layout {
+      grid-template-columns: 1fr;
+    }
+
+    .cart-summary {
+      position: static;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .cart-item {
+      grid-template-columns: 80px 1fr;
+      gap: var(--space-md);
+    }
+
+    .cart-item-right {
+      grid-column: 1 / -1;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: var(--space-md);
+      border-top: 1px solid var(--color-border);
+    }
+  }
+{% endstyle %}
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Quantity buttons
+    document.querySelectorAll('.cart-quantity-btn').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        var line = this.dataset.line;
+        var input = document.querySelector('.cart-quantity-value[data-line="' + line + '"]');
+        var val = parseInt(input.value);
+
+        if (this.dataset.action === 'decrease') {
+          if (val > 0) input.value = val - 1;
+        } else {
+          input.value = val + 1;
+        }
+
+        // Auto-submit form after short delay
+        clearTimeout(window.cartUpdateTimeout);
+        window.cartUpdateTimeout = setTimeout(function() {
+          document.getElementById('CartForm').submit();
+        }, 500);
+      });
+    });
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Cart",
+  "class": "section-cart",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "PENDING REQUESTS"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "Review your selections before submitting for approval."
+    },
+    {
+      "type": "text",
+      "id": "note_placeholder",
+      "label": "Note placeholder",
+      "default": "Add any special requests or notes for HR processing. E.g., 'Please ship to home office' or 'Gift wrap for employee appreciation'"
+    },
+    {
+      "type": "text",
+      "id": "checkout_button_text",
+      "label": "Checkout button text",
+      "default": "SUBMIT FOR APPROVAL"
+    },
+    {
+      "type": "number",
+      "id": "free_shipping_threshold",
+      "label": "Free shipping threshold (cents)",
+      "default": 7500,
+      "info": "7500 = $75.00"
+    },
+    {
+      "type": "textarea",
+      "id": "legal_text",
+      "label": "Legal text",
+      "default": "By submitting this requisition, you acknowledge that all items are subject to availability and HR approval. Your purchase history is recorded."
+    },
+    {
+      "type": "header",
+      "content": "Empty Cart"
+    },
+    {
+      "type": "text",
+      "id": "empty_title",
+      "label": "Empty cart title",
+      "default": "No items pending review"
+    },
+    {
+      "type": "text",
+      "id": "empty_text",
+      "label": "Empty cart text",
+      "default": "Your requisition queue is empty. Browse our catalog to add items."
+    },
+    {
+      "type": "text",
+      "id": "empty_button_text",
+      "label": "Empty cart button text",
+      "default": "Browse Catalog"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,21 @@
+{% comment %}
+  ABOUTME: Placeholder product card for empty collections
+  ABOUTME: Shows when no products are available
+{% endcomment %}
+
+<article class="product-card product-card--placeholder">
+  <div class="product-card-inner">
+    <div class="product-image">
+      {{ 'product-1' | placeholder_svg_tag: 'product-card-placeholder-svg' }}
+    </div>
+    <div class="product-info">
+      <span class="product-sku">SKU: MF-XXX-000</span>
+      <h3 class="product-title">Sample Product</h3>
+      <p class="product-description">Add products to this collection to see them here.</p>
+      <div class="product-footer">
+        <span class="product-price">$0.00</span>
+        <span class="product-action">View</span>
+      </div>
+    </div>
+  </div>
+</article>

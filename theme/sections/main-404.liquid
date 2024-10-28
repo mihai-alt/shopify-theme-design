@@ -1,0 +1,119 @@
+{% comment %}
+  ABOUTME: 404 error page with corporate memo styling
+  ABOUTME: Maintains the mandatory fun vibe even in errors
+{% endcomment %}
+
+<section class="error-page">
+  <div class="container">
+    <div class="error-content">
+      <p class="error-code">404</p>
+      <h1 class="error-title">{{ section.settings.heading }}</h1>
+      <p class="error-message">{{ section.settings.message }}</p>
+      <div class="error-memo">
+        <p><strong>MEMO:</strong> The requested document could not be located in our filing system.</p>
+        <p><span class="redacted">{{ section.settings.redacted_text }}</span></p>
+      </div>
+      <a href="{{ routes.root_url }}" class="btn btn-primary">{{ section.settings.button_text }}</a>
+    </div>
+  </div>
+</section>
+
+{% style %}
+  .error-page {
+    padding: var(--space-2xl) 0;
+    min-height: 60vh;
+    display: flex;
+    align-items: center;
+  }
+
+  .error-content {
+    text-align: center;
+    max-width: 500px;
+    margin: 0 auto;
+  }
+
+  .error-code {
+    font-family: var(--font-heading);
+    font-size: 8rem;
+    font-weight: 700;
+    line-height: 1;
+    color: var(--color-border);
+    margin-bottom: var(--space-md);
+  }
+
+  .error-title {
+    font-family: var(--font-heading);
+    font-size: 1.5rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    margin-bottom: var(--space-md);
+  }
+
+  .error-message {
+    color: var(--color-text-muted);
+    margin-bottom: var(--space-lg);
+  }
+
+  .error-memo {
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    padding: var(--space-lg);
+    margin-bottom: var(--space-xl);
+    text-align: left;
+    font-family: var(--font-accent);
+    font-size: 0.875rem;
+  }
+
+  .error-memo p {
+    margin-bottom: var(--space-sm);
+  }
+
+  .error-memo p:last-child {
+    margin-bottom: 0;
+  }
+
+  .error-memo .redacted {
+    background-color: var(--color-primary);
+    color: var(--color-primary);
+    padding: 0 0.25em;
+    cursor: help;
+  }
+
+  .error-memo .redacted:hover {
+    background-color: transparent;
+    color: var(--color-text);
+  }
+{% endstyle %}
+
+{% schema %}
+{
+  "name": "404 Page",
+  "class": "section-404",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "FILE NOT FOUND"
+    },
+    {
+      "type": "textarea",
+      "id": "message",
+      "label": "Message",
+      "default": "The page you're looking for has been moved, deleted, or never existed. Please check the URL or return to the main office."
+    },
+    {
+      "type": "text",
+      "id": "redacted_text",
+      "label": "Redacted text",
+      "default": "This incident has been logged."
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button text",
+      "default": "RETURN TO MAIN OFFICE"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,181 @@
+{% comment %}
+  ABOUTME: Bulletin board style section with pinned notices
+  ABOUTME: Cork board background with push-pin cards
+{% endcomment %}
+
+<section class="section-notice">
+  <div class="container">
+    <div class="notice-grid">
+      {% for block in section.blocks %}
+        <div class="notice-card" {{ block.shopify_attributes }}>
+          <h3 class="notice-title">{{ block.settings.title }}</h3>
+          <div class="notice-text">
+            {{ block.settings.content }}
+            {% if block.settings.redacted_text != blank %}
+              <span class="redacted">{{ block.settings.redacted_text }}</span>
+            {% endif %}
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{% style %}
+  .section-notice {
+    background-color: #d4a574;
+    padding: var(--space-2xl) 0;
+    position: relative;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.15'/%3E%3C/svg%3E");
+  }
+
+  .notice-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-xl);
+  }
+
+  .notice-card {
+    background-color: var(--color-surface);
+    padding: var(--space-lg);
+    position: relative;
+    transform: rotate(-1deg);
+    box-shadow: 2px 2px 8px rgba(0,0,0,0.15);
+  }
+
+  .notice-card:nth-child(2) {
+    transform: rotate(1.5deg);
+  }
+
+  .notice-card:nth-child(3) {
+    transform: rotate(-0.5deg);
+  }
+
+  .notice-card:nth-child(4) {
+    transform: rotate(0.5deg);
+  }
+
+  .notice-card:nth-child(5) {
+    transform: rotate(-1.5deg);
+  }
+
+  .notice-card:nth-child(6) {
+    transform: rotate(1deg);
+  }
+
+  .notice-card::before {
+    content: '';
+    position: absolute;
+    top: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 16px;
+    height: 16px;
+    background: radial-gradient(circle at 30% 30%, #ff6b6b, var(--color-accent));
+    border-radius: 50%;
+    box-shadow: 0 2px 3px rgba(0,0,0,0.2);
+  }
+
+  .notice-title {
+    font-family: var(--font-heading);
+    font-size: 1rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    margin-bottom: var(--space-sm);
+  }
+
+  .notice-text {
+    font-size: 0.875rem;
+    color: var(--color-text-muted);
+    line-height: 1.6;
+  }
+
+  .notice-text .redacted {
+    background-color: var(--color-primary);
+    color: var(--color-primary);
+    padding: 0 0.25em;
+    transition: var(--transition-normal);
+    cursor: help;
+  }
+
+  .notice-text .redacted:hover {
+    background-color: transparent;
+    color: var(--color-text);
+  }
+
+  @media (max-width: 768px) {
+    .notice-grid {
+      grid-template-columns: 1fr;
+      gap: var(--space-lg);
+    }
+
+    .notice-card {
+      transform: rotate(0) !important;
+    }
+  }
+{% endstyle %}
+
+{% schema %}
+{
+  "name": "Notice Board",
+  "class": "section-notice-board",
+  "settings": [],
+  "blocks": [
+    {
+      "type": "notice",
+      "name": "Notice",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "RE: SHIPPING POLICY"
+        },
+        {
+          "type": "richtext",
+          "id": "content",
+          "label": "Content",
+          "default": "<p>All requisitions over $75 qualify for <strong>complimentary expedited processing</strong>. Your package will arrive within 3-5 business days.</p>"
+        },
+        {
+          "type": "text",
+          "id": "redacted_text",
+          "label": "Redacted text (optional)",
+          "info": "Will appear blacked out, revealed on hover"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Notice Board",
+      "blocks": [
+        {
+          "type": "notice",
+          "settings": {
+            "title": "RE: SHIPPING POLICY",
+            "content": "<p>All requisitions over $75 qualify for <strong>complimentary expedited processing</strong>. Your package will arrive within 3-5 business days.</p>",
+            "redacted_text": "HR has no control over shipping delays."
+          }
+        },
+        {
+          "type": "notice",
+          "settings": {
+            "title": "REMINDER: RETURN POLICY",
+            "content": "<p>Items may be returned within 30 days. Please file Form 27-C and await processing. <strong>No questions will be asked.</strong></p>",
+            "redacted_text": "Your file has been noted."
+          }
+        },
+        {
+          "type": "notice",
+          "settings": {
+            "title": "BULK ORDERS AVAILABLE",
+            "content": "<p>Planning a team event? Department orders of 10+ items receive a <strong>15% efficiency discount</strong>. Contact your department liaison.</p>",
+            "redacted_text": "Participation is tracked."
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,74 @@
+{
+  "sections": {
+    "hero": {
+      "type": "hero",
+      "settings": {
+        "show_memo_header": true,
+        "heading_before": "YOUR PARTICIPATION IS",
+        "heading_redacted": "REQUIRED",
+        "heading_after": "APPRECIATED",
+        "notice_text": "Enthusiasm is not optional. Please browse responsibly.",
+        "button_primary_text": "BEGIN REQUISITION",
+        "button_secondary_text": "VIEW APPROVED ITEMS"
+      }
+    },
+    "featured-collection": {
+      "type": "featured-collection",
+      "settings": {
+        "form_number": "Form 27-B: Featured Inventory",
+        "heading": "APPROVED FOR DISTRIBUTION",
+        "description": "The following items have been cleared by Human Resources for employee acquisition. Selection is final.",
+        "products_to_show": 4,
+        "products_per_row": "4",
+        "button_text": "View Full Catalog"
+      }
+    },
+    "notice-board": {
+      "type": "notice-board",
+      "blocks": {
+        "notice-1": {
+          "type": "notice",
+          "settings": {
+            "title": "RE: SHIPPING POLICY",
+            "content": "<p>All requisitions over $75 qualify for <strong>complimentary expedited processing</strong>. Your package will arrive within 3-5 business days.</p>",
+            "redacted_text": "HR has no control over shipping delays."
+          }
+        },
+        "notice-2": {
+          "type": "notice",
+          "settings": {
+            "title": "REMINDER: RETURN POLICY",
+            "content": "<p>Items may be returned within 30 days. Please file Form 27-C and await processing. <strong>No questions will be asked.</strong></p>",
+            "redacted_text": "Your file has been noted."
+          }
+        },
+        "notice-3": {
+          "type": "notice",
+          "settings": {
+            "title": "BULK ORDERS AVAILABLE",
+            "content": "<p>Planning a team event? Department orders of 10+ items receive a <strong>15% efficiency discount</strong>. Contact your department liaison.</p>",
+            "redacted_text": "Participation is tracked."
+          }
+        }
+      },
+      "block_order": ["notice-1", "notice-2", "notice-3"]
+    },
+    "secondary-collection": {
+      "type": "featured-collection",
+      "settings": {
+        "form_number": "Appendix C: Departmental Categories",
+        "heading": "BROWSE BY DIVISION",
+        "description": "Merchandise organized by corporate function. Find your department's approved items.",
+        "products_to_show": 4,
+        "products_per_row": "4",
+        "button_text": ""
+      }
+    }
+  },
+  "order": [
+    "hero",
+    "featured-collection",
+    "notice-board",
+    "secondary-collection"
+  ]
+}

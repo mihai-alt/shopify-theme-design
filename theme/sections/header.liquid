@@ -1,0 +1,217 @@
+{% comment %}
+  ABOUTME: Site header with logo, navigation, and cart link
+  ABOUTME: Styled as corporate letterhead with typewriter typography
+{% endcomment %}
+
+<header class="site-header">
+  <div class="header-inner">
+    <a href="{{ routes.root_url }}" class="logo">
+      {% if section.settings.logo != blank %}
+        <img
+          src="{{ section.settings.logo | image_url: width: 200 }}"
+          alt="{{ shop.name }}"
+          width="200"
+          height="auto"
+          loading="eager"
+        >
+      {% else %}
+        {{ section.settings.logo_text | default: shop.name }}
+        {% if section.settings.logo_subtext != blank %}
+          <span class="logo-sub">{{ section.settings.logo_subtext }}</span>
+        {% endif %}
+      {% endif %}
+    </a>
+
+    <nav class="nav-main">
+      <ul class="nav-links">
+        {% for link in section.settings.menu.links %}
+          <li>
+            <a href="{{ link.url }}" class="nav-link{% if link.active %} active{% endif %}">
+              {{ link.title }}
+            </a>
+          </li>
+        {% endfor %}
+      </ul>
+
+      <div class="nav-actions">
+        <a href="{{ routes.cart_url }}" class="cart-link">
+          {{ section.settings.cart_text | default: 'Pending' }} ({{ cart.item_count }})
+        </a>
+      </div>
+    </nav>
+
+    <button class="nav-toggle" aria-label="Menu" aria-expanded="false">
+      <span class="nav-toggle-bar"></span>
+      <span class="nav-toggle-bar"></span>
+      <span class="nav-toggle-bar"></span>
+    </button>
+  </div>
+</header>
+
+{% style %}
+  .site-header {
+    background-color: var(--color-surface);
+    border-bottom: 2px solid var(--color-border-dark);
+    height: var(--header-height);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .header-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 100%;
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 0 var(--space-lg);
+  }
+
+  .logo {
+    font-family: var(--font-heading);
+    font-size: 1rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    display: flex;
+    flex-direction: column;
+    line-height: 1.1;
+    text-decoration: none;
+    color: var(--color-text);
+  }
+
+  .logo img {
+    max-height: 50px;
+    width: auto;
+  }
+
+  .logo-sub {
+    font-size: 0.625rem;
+    font-weight: 400;
+    color: var(--color-text-muted);
+    letter-spacing: 0.15em;
+  }
+
+  .nav-main {
+    display: flex;
+    align-items: center;
+    gap: var(--space-xl);
+  }
+
+  .nav-links {
+    display: flex;
+    gap: var(--space-lg);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .nav-link {
+    font-family: var(--font-accent);
+    font-size: 0.75rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    padding: var(--space-xs) 0;
+    border-bottom: 1px solid transparent;
+    transition: var(--transition-fast);
+    text-decoration: none;
+    color: var(--color-text);
+  }
+
+  .nav-link:hover,
+  .nav-link.active {
+    border-bottom-color: var(--color-primary);
+  }
+
+  .nav-actions {
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+  }
+
+  .cart-link {
+    font-family: var(--font-accent);
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: var(--space-sm) var(--space-md);
+    border: 1px solid var(--color-border-dark);
+    transition: var(--transition-fast);
+    text-decoration: none;
+    color: var(--color-text);
+  }
+
+  .cart-link:hover {
+    background-color: var(--color-primary);
+    color: var(--color-surface);
+  }
+
+  .nav-toggle {
+    display: none;
+    flex-direction: column;
+    gap: 4px;
+    padding: var(--space-sm);
+    background: none;
+    border: none;
+    cursor: pointer;
+  }
+
+  .nav-toggle-bar {
+    width: 24px;
+    height: 2px;
+    background-color: var(--color-primary);
+    transition: var(--transition-fast);
+  }
+
+  @media (max-width: 768px) {
+    .nav-links {
+      display: none;
+    }
+
+    .nav-toggle {
+      display: flex;
+    }
+  }
+{% endstyle %}
+
+{% schema %}
+{
+  "name": "Header",
+  "class": "section-header",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Logo image"
+    },
+    {
+      "type": "text",
+      "id": "logo_text",
+      "label": "Logo text",
+      "default": "MANDATORY FUN",
+      "info": "Displayed if no logo image is set"
+    },
+    {
+      "type": "text",
+      "id": "logo_subtext",
+      "label": "Logo subtext",
+      "default": "Official Merchandise Distribution"
+    },
+    {
+      "type": "link_list",
+      "id": "menu",
+      "label": "Menu",
+      "default": "main-menu"
+    },
+    {
+      "type": "text",
+      "id": "cart_text",
+      "label": "Cart link text",
+      "default": "Pending"
+    }
+  ]
+}
+{% endschema %}

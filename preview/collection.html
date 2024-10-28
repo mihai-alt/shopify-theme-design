@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Requisition Items | MANDATORY FUN</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Serif:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/theme.css">
+  <style>
+    /* Collection-specific styles */
+    .collection-header {
+      background-color: var(--color-surface);
+      border-bottom: 2px solid var(--color-border-dark);
+      padding: var(--space-xl) 0;
+    }
+
+    .collection-header-inner {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 0 var(--space-lg);
+    }
+
+    .collection-meta {
+      font-family: var(--font-accent);
+      font-size: 0.6875rem;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--color-text-muted);
+      margin-bottom: var(--space-md);
+    }
+
+    .collection-title {
+      font-size: 2rem;
+      margin-bottom: var(--space-sm);
+    }
+
+    .collection-count {
+      font-family: var(--font-accent);
+      font-size: 0.875rem;
+      color: var(--color-text-muted);
+    }
+
+    .collection-content {
+      padding: var(--space-xl) 0 var(--space-2xl);
+    }
+
+    .collection-layout {
+      display: grid;
+      grid-template-columns: 240px 1fr;
+      gap: var(--space-xl);
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 0 var(--space-lg);
+    }
+
+    /* Filters sidebar */
+    .filters-sidebar {
+      position: sticky;
+      top: calc(var(--header-height) + var(--space-lg));
+      align-self: start;
+    }
+
+    .filter-section {
+      margin-bottom: var(--space-lg);
+      padding-bottom: var(--space-lg);
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    .filter-section:last-child {
+      border-bottom: none;
+    }
+
+    .filter-title {
+      font-family: var(--font-accent);
+      font-size: 0.6875rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--color-text-muted);
+      margin-bottom: var(--space-md);
+    }
+
+    .filter-options {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-sm);
+    }
+
+    .filter-option {
+      display: flex;
+      align-items: center;
+      gap: var(--space-sm);
+      font-family: var(--font-body);
+      font-size: 0.875rem;
+      cursor: pointer;
+    }
+
+    .filter-checkbox {
+      width: 16px;
+      height: 16px;
+      border: 1px solid var(--color-border-dark);
+      background-color: var(--color-surface);
+      appearance: none;
+      cursor: pointer;
+      position: relative;
+    }
+
+    .filter-checkbox:checked {
+      background-color: var(--color-primary);
+    }
+
+    .filter-checkbox:checked::after {
+      content: '✓';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: var(--color-surface);
+      font-size: 0.75rem;
+    }
+
+    .filter-count {
+      font-family: var(--font-accent);
+      font-size: 0.75rem;
+      color: var(--color-text-muted);
+      margin-left: auto;
+    }
+
+    /* Sort bar */
+    .collection-toolbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: var(--space-lg);
+      padding-bottom: var(--space-md);
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    .toolbar-left {
+      font-family: var(--font-accent);
+      font-size: 0.75rem;
+      color: var(--color-text-muted);
+    }
+
+    .toolbar-right {
+      display: flex;
+      align-items: center;
+      gap: var(--space-md);
+    }
+
+    .sort-select {
+      font-family: var(--font-accent);
+      font-size: 0.75rem;
+      padding: var(--space-xs) var(--space-lg) var(--space-xs) var(--space-sm);
+      border: 1px solid var(--color-border);
+      background-color: var(--color-surface);
+      cursor: pointer;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 10 10'%3E%3Cpath fill='%231a1a18' d='M5 7L1 3h8z'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 8px center;
+    }
+
+    .view-toggle {
+      display: flex;
+      border: 1px solid var(--color-border);
+    }
+
+    .view-btn {
+      padding: var(--space-xs) var(--space-sm);
+      border: none;
+      background: none;
+      cursor: pointer;
+      color: var(--color-text-muted);
+    }
+
+    .view-btn.active {
+      background-color: var(--color-primary);
+      color: var(--color-surface);
+    }
+
+    /* Product grid in collection */
+    .collection-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-lg);
+    }
+
+    /* Pagination */
+    .pagination {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: var(--space-sm);
+      margin-top: var(--space-2xl);
+      padding-top: var(--space-xl);
+      border-top: 1px solid var(--color-border);
+    }
+
+    .pagination-btn {
+      font-family: var(--font-accent);
+      font-size: 0.75rem;
+      padding: var(--space-sm) var(--space-md);
+      border: 1px solid var(--color-border);
+      background: none;
+      cursor: pointer;
+      transition: var(--transition-fast);
+    }
+
+    .pagination-btn:hover {
+      background-color: var(--color-primary);
+      color: var(--color-surface);
+      border-color: var(--color-primary);
+    }
+
+    .pagination-btn.active {
+      background-color: var(--color-primary);
+      color: var(--color-surface);
+      border-color: var(--color-primary);
+    }
+
+    .pagination-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    @media (max-width: 1024px) {
+      .collection-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .filters-sidebar {
+        position: static;
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--space-lg);
+      }
+
+      .filter-section {
+        flex: 1;
+        min-width: 200px;
+        border-bottom: none;
+        padding-bottom: 0;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .collection-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .filters-sidebar {
+        display: none; /* Would become drawer on mobile */
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page-wrapper">
+
+    <!-- HEADER -->
+    <header class="site-header">
+      <div class="header-inner">
+        <a href="/" class="logo">
+          MANDATORY FUN
+          <span class="logo-sub">Official Merchandise Distribution</span>
+        </a>
+
+        <nav class="nav-main">
+          <ul class="nav-links">
+            <li><a href="/collection.html" class="nav-link">Requisition Items</a></li>
+            <li><a href="#" class="nav-link">Department Catalog</a></li>
+            <li><a href="#" class="nav-link">Policy & FAQ</a></li>
+          </ul>
+
+          <div class="nav-actions">
+            <a href="/cart.html" class="cart-link">Pending (2)</a>
+          </div>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <!-- COLLECTION HEADER -->
+      <section class="collection-header">
+        <div class="collection-header-inner">
+          <p class="collection-meta">
+            <span>Form 27-B</span> / <span>Inventory Catalog</span> / <span>Revision 4.2</span>
+          </p>
+          <h1 class="collection-title">ALL APPROVED ITEMS</h1>
+          <p class="collection-count">Displaying 12 of 60 items available for requisition</p>
+        </div>
+      </section>
+
+      <!-- COLLECTION CONTENT -->
+      <section class="collection-content">
+        <div class="collection-layout">
+
+          <!-- FILTERS SIDEBAR -->
+          <aside class="filters-sidebar">
+            <div class="filter-section">
+              <h3 class="filter-title">Department</h3>
+              <div class="filter-options">
+                <label class="filter-option">
+                  <input type="checkbox" class="filter-checkbox" checked>
+                  <span>Apparel</span>
+                  <span class="filter-count">(24)</span>
+                </label>
+                <label class="filter-option">
+                  <input type="checkbox" class="filter-checkbox">
+                  <span>Desk Items</span>
+                  <span class="filter-count">(18)</span>
+                </label>
+                <label class="filter-option">
+                  <input type="checkbox" class="filter-checkbox">
+                  <span>Bags & Carry</span>
+                  <span class="filter-count">(12)</span>
+                </label>
+                <label class="filter-option">
+                  <input type="checkbox" class="filter-checkbox">
+                  <span>Special Edition</span>
+                  <span class="filter-count">(6)</span>
+                </label>
+              </div>
+            </div>
+
+            <div class="filter-section">
+              <h3 class="filter-title">Size</h3>
+              <div class="filter-options">
+                <label class="filter-option">
+                  <input type="checkbox" class="filter-checkbox">
+                  <span>XS</span>
+                  <span class="filter-count">(8)</span>
+                </label>
+                <label class="filter-option">
+                  <input type="checkbox" class="filter-checkbox">
+                  <span>S</span>
+                  <span class="filter-count">(12)</span>
+                </label>
+                <label class="filter-option">
+                  <input type="checkbox" class="filter-checkbox">
+                  <span>M</span>
+                  <span class="filter-count">(15)</span>
+                </label>
+                <label class="filter-option">
+                  <input type="checkbox" class="filter-checkbox">
+                  <span>L</span>
+                  <span class="filter-count">(14)</span>
+                </label>
+                <label class="filter-option">
+                  <input type="checkbox" class="filter-checkbox">
+                  <span>XL</span>
+                  <span class="filter-count">(11)</span>
+                </label>
+              </div>
+            </div>
+
+            <div class="filter-section">
+              <h3 class="filter-title">Price Range</h3>
+              <div class="filter-options">
+                <label class="filter-option">
+                  <input type="checkbox" class="filter-checkbox">
+                  <span>Under $25</span>
+                  <span class="filter-count">(8)</span>
+                </label>
+                <label class="filter-option">
+                  <input type="checkbox" class="filter-checkbox">
+                  <span>$25 - $50</span>
+                  <span class="filter-count">(22)</span>
+                </label>
+                <label class="filter-option">
+                  <input type="checkbox" class="filter-checkbox">
+                  <span>$50 - $100</span>
+                  <span class="filter-count">(18)</span>
+                </label>
+                <label class="filter-option">
+                  <input type="checkbox" class="filter-checkbox">
+                  <span>Over $100</span>
+                  <span class="filter-count">(12)</span>
+                </label>
+              </div>
+            </div>
+
+            <div class="filter-section">
+              <h3 class="filter-title">Availability</h3>
+              <div class="filter-options">
+                <label class="filter-option">
+                  <input type="checkbox" class="filter-checkbox" checked>
+                  <span>In Stock</span>
+                  <span class="filter-count">(52)</span>
+                </label>
+                <label class="filter-option">
+                  <input type="checkbox" class="filter-checkbox">
+                  <span>Backordered</span>
+                  <span class="filter-count">(8)</span>
+                </label>
+              </div>
+            </div>
+          </aside>
+
+          <!-- MAIN CONTENT -->
+          <div class="collection-main">
+            <div class="collection-toolbar">
+              <p class="toolbar-left">Showing 1-12 of 60 approved items</p>
+              <div class="toolbar-right">
+                <select class="sort-select">
+                  <option>Sort by: Relevance</option>
+                  <option>Price: Low to High</option>
+                  <option>Price: High to Low</option>
+                  <option>Newest First</option>
+                  <option>SKU: A-Z</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="collection-grid">
+              <!-- Product 1 -->
+              <article class="product-card">
+                <a href="/product.html" class="product-card-inner">
+                  <div class="product-image">
+                    <img src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400&h=500&fit=crop" alt="Standard Issue Hoodie">
+                  </div>
+                  <div class="product-info">
+                    <span class="product-sku">SKU: MF-HOD-001</span>
+                    <h3 class="product-title">Standard Issue Hoodie</h3>
+                    <p class="product-description">100% cotton. Company logo placement meets guidelines.</p>
+                    <div class="product-footer">
+                      <span class="product-price">$65.00</span>
+                      <span class="product-action">Requisition</span>
+                    </div>
+                  </div>
+                </a>
+              </article>
+
+              <!-- Product 2 -->
+              <article class="product-card">
+                <a href="/product.html" class="product-card-inner">
+                  <div class="product-image">
+                    <span class="product-badge">Budget Surplus</span>
+                    <img src="https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?w=400&h=500&fit=crop" alt="Compliance Tee">
+                  </div>
+                  <div class="product-info">
+                    <span class="product-sku">SKU: MF-TEE-003</span>
+                    <h3 class="product-title">"I Survived the Merger" Tee</h3>
+                    <p class="product-description">Limited edition. While supplies last.</p>
+                    <div class="product-footer">
+                      <span class="product-price">
+                        <span class="product-price-original">$45.00</span>
+                        $29.00
+                      </span>
+                      <span class="product-action">Requisition</span>
+                    </div>
+                  </div>
+                </a>
+              </article>
+
+              <!-- Product 3 -->
+              <article class="product-card">
+                <a href="/product.html" class="product-card-inner">
+                  <div class="product-image">
+                    <img src="https://images.unsplash.com/photo-1588099768523-f4e6a5679d88?w=400&h=500&fit=crop" alt="Mandatory Coffee Mug">
+                  </div>
+                  <div class="product-info">
+                    <span class="product-sku">SKU: MF-MUG-007</span>
+                    <h3 class="product-title">Mandatory Coffee Receptacle</h3>
+                    <p class="product-description">Ceramic. Dishwasher safe. Judgment-resistant.</p>
+                    <div class="product-footer">
+                      <span class="product-price">$18.00</span>
+                      <span class="product-action">Requisition</span>
+                    </div>
+                  </div>
+                </a>
+              </article>
+
+              <!-- Product 4 -->
+              <article class="product-card">
+                <a href="/product.html" class="product-card-inner">
+                  <div class="product-image">
+                    <img src="https://images.unsplash.com/photo-1622560480605-d83c853bc5c3?w=400&h=500&fit=crop" alt="Team Building Cap">
+                  </div>
+                  <div class="product-info">
+                    <span class="product-sku">SKU: MF-CAP-002</span>
+                    <h3 class="product-title">Team Building Headwear</h3>
+                    <p class="product-description">Adjustable. One size fits most attitudes.</p>
+                    <div class="product-footer">
+                      <span class="product-price">$28.00</span>
+                      <span class="product-action">Requisition</span>
+                    </div>
+                  </div>
+                </a>
+              </article>
+
+              <!-- Product 5 -->
+              <article class="product-card">
+                <a href="/product.html" class="product-card-inner">
+                  <div class="product-image">
+                    <img src="https://images.unsplash.com/photo-1618354691373-d851c5c3a990?w=400&h=500&fit=crop" alt="Performance Quarter Zip">
+                  </div>
+                  <div class="product-info">
+                    <span class="product-sku">SKU: MF-QTR-004</span>
+                    <h3 class="product-title">Performance Quarter Zip</h3>
+                    <p class="product-description">Athletic fit. Ideal for mandatory team activities.</p>
+                    <div class="product-footer">
+                      <span class="product-price">$78.00</span>
+                      <span class="product-action">Requisition</span>
+                    </div>
+                  </div>
+                </a>
+              </article>
+
+              <!-- Product 6 -->
+              <article class="product-card">
+                <a href="/product.html" class="product-card-inner">
+                  <div class="product-image">
+                    <img src="https://images.unsplash.com/photo-1544816155-12df9643f363?w=400&h=500&fit=crop" alt="Company Notebook">
+                  </div>
+                  <div class="product-info">
+                    <span class="product-sku">SKU: MF-NTB-012</span>
+                    <h3 class="product-title">Meeting Notes Repository</h3>
+                    <p class="product-description">192 pages. For documenting action items.</p>
+                    <div class="product-footer">
+                      <span class="product-price">$22.00</span>
+                      <span class="product-action">Requisition</span>
+                    </div>
+                  </div>
+                </a>
+              </article>
+
+              <!-- Product 7 -->
+              <article class="product-card">
+                <a href="/product.html" class="product-card-inner">
+                  <div class="product-image">
+                    <span class="product-badge">New</span>
+                    <img src="https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=400&h=500&fit=crop" alt="Corporate Backpack">
+                  </div>
+                  <div class="product-info">
+                    <span class="product-sku">SKU: MF-BAG-008</span>
+                    <h3 class="product-title">Commuter Transport Unit</h3>
+                    <p class="product-description">Laptop sleeve. Multiple compartments. Very practical.</p>
+                    <div class="product-footer">
+                      <span class="product-price">$89.00</span>
+                      <span class="product-action">Requisition</span>
+                    </div>
+                  </div>
+                </a>
+              </article>
+
+              <!-- Product 8 -->
+              <article class="product-card">
+                <a href="/product.html" class="product-card-inner">
+                  <div class="product-image">
+                    <img src="https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?w=400&h=500&fit=crop" alt="Limited Sneakers">
+                  </div>
+                  <div class="product-info">
+                    <span class="product-sku">SKU: MF-SNK-001</span>
+                    <h3 class="product-title">Executive Footwear (Ltd.)</h3>
+                    <p class="product-description">Collab edition. <span class="redacted">C-suite only.</span></p>
+                    <div class="product-footer">
+                      <span class="product-price">$145.00</span>
+                      <span class="product-action">Requisition</span>
+                    </div>
+                  </div>
+                </a>
+              </article>
+
+              <!-- Product 9 -->
+              <article class="product-card">
+                <a href="/product.html" class="product-card-inner">
+                  <div class="product-image">
+                    <img src="https://images.unsplash.com/photo-1576566588028-4147f3842f27?w=400&h=500&fit=crop" alt="Vintage Tee">
+                  </div>
+                  <div class="product-info">
+                    <span class="product-sku">SKU: MF-TEE-009</span>
+                    <h3 class="product-title">"Est. 2015" Heritage Tee</h3>
+                    <p class="product-description">Vintage wash. Pre-distressed for authenticity.</p>
+                    <div class="product-footer">
+                      <span class="product-price">$38.00</span>
+                      <span class="product-action">Requisition</span>
+                    </div>
+                  </div>
+                </a>
+              </article>
+
+              <!-- Product 10 -->
+              <article class="product-card">
+                <a href="/product.html" class="product-card-inner">
+                  <div class="product-image">
+                    <img src="https://images.unsplash.com/photo-1611791484670-ce19b801d192?w=400&h=500&fit=crop" alt="Water Bottle">
+                  </div>
+                  <div class="product-info">
+                    <span class="product-sku">SKU: MF-BTL-005</span>
+                    <h3 class="product-title">Hydration Compliance Vessel</h3>
+                    <p class="product-description">32oz. Vacuum insulated. Leak-proof.</p>
+                    <div class="product-footer">
+                      <span class="product-price">$34.00</span>
+                      <span class="product-action">Requisition</span>
+                    </div>
+                  </div>
+                </a>
+              </article>
+
+              <!-- Product 11 -->
+              <article class="product-card">
+                <a href="/product.html" class="product-card-inner">
+                  <div class="product-image">
+                    <img src="https://images.unsplash.com/photo-1578681994506-b8f463449011?w=400&h=500&fit=crop" alt="Socks Pack">
+                  </div>
+                  <div class="product-info">
+                    <span class="product-sku">SKU: MF-SOX-003</span>
+                    <h3 class="product-title">Ankle Coverage (3-Pack)</h3>
+                    <p class="product-description">Cotton blend. Logo subtle enough for clients.</p>
+                    <div class="product-footer">
+                      <span class="product-price">$24.00</span>
+                      <span class="product-action">Requisition</span>
+                    </div>
+                  </div>
+                </a>
+              </article>
+
+              <!-- Product 12 -->
+              <article class="product-card">
+                <a href="/product.html" class="product-card-inner">
+                  <div class="product-image">
+                    <span class="product-badge">Low Stock</span>
+                    <img src="https://images.unsplash.com/photo-1618354691438-25bc04584c23?w=400&h=500&fit=crop" alt="Beanie">
+                  </div>
+                  <div class="product-info">
+                    <span class="product-sku">SKU: MF-BNE-006</span>
+                    <h3 class="product-title">Cold Weather Protocol Beanie</h3>
+                    <p class="product-description">Ribbed knit. Works from home approved.</p>
+                    <div class="product-footer">
+                      <span class="product-price">$32.00</span>
+                      <span class="product-action">Requisition</span>
+                    </div>
+                  </div>
+                </a>
+              </article>
+            </div>
+
+            <!-- PAGINATION -->
+            <nav class="pagination">
+              <button class="pagination-btn" disabled>&larr; Previous</button>
+              <button class="pagination-btn active">1</button>
+              <button class="pagination-btn">2</button>
+              <button class="pagination-btn">3</button>
+              <button class="pagination-btn">4</button>
+              <button class="pagination-btn">5</button>
+              <button class="pagination-btn">Next &rarr;</button>
+            </nav>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="site-footer">
+      <div class="footer-inner">
+        <div class="footer-grid">
+          <div class="footer-brand">
+            <p class="footer-logo">MANDATORY FUN</p>
+            <p class="footer-tagline">
+              Official merchandise distribution center. Your participation has been noted and appreciated.
+            </p>
+          </div>
+
+          <div class="footer-column">
+            <h4>NAVIGATION</h4>
+            <nav class="footer-links">
+              <a href="/collection.html" class="footer-link">All Products</a>
+              <a href="#" class="footer-link">New Arrivals</a>
+              <a href="#" class="footer-link">Best Sellers</a>
+              <a href="#" class="footer-link">On Sale</a>
+            </nav>
+          </div>
+
+          <div class="footer-column">
+            <h4>INFORMATION</h4>
+            <nav class="footer-links">
+              <a href="#" class="footer-link">About Us</a>
+              <a href="#" class="footer-link">Contact HR</a>
+              <a href="#" class="footer-link">Bulk Orders</a>
+              <a href="#" class="footer-link">FAQ</a>
+            </nav>
+          </div>
+
+          <div class="footer-column">
+            <h4>POLICY</h4>
+            <nav class="footer-links">
+              <a href="#" class="footer-link">Shipping Info</a>
+              <a href="#" class="footer-link">Returns (Form 27-C)</a>
+              <a href="#" class="footer-link">Privacy Policy</a>
+              <a href="#" class="footer-link">Terms of Service</a>
+            </nav>
+          </div>
+        </div>
+
+        <div class="footer-bottom">
+          <p>&copy; 2024 Mandatory Fun. A Division of <span class="redacted">Definitely Real Corp</span>.</p>
+          <div class="footer-legal">
+            <span>Dropbox</span>
+            <span>GitHub</span>
+            <span>tickd</span>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+  </div>
+
+  <script src="/js/preview.js"></script>
+</body>
+</html>

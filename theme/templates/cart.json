@@ -1,0 +1,17 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-cart",
+      "settings": {
+        "title": "PENDING REQUESTS",
+        "subtitle": "Review your selections before submitting for approval.",
+        "checkout_button_text": "SUBMIT FOR APPROVAL",
+        "free_shipping_threshold": 7500,
+        "empty_title": "No items pending review",
+        "empty_text": "Your requisition queue is empty. Browse our catalog to add items.",
+        "empty_button_text": "Browse Catalog"
+      }
+    }
+  },
+  "order": ["main"]
+}

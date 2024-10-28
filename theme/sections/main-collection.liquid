@@ -1,0 +1,376 @@
+{% comment %}
+  ABOUTME: Main collection template with filters and product grid
+  ABOUTME: Form 27-B catalog styling with sidebar filters
+{% endcomment %}
+
+<section class="collection-header">
+  <div class="collection-header-inner">
+    <p class="collection-meta">
+      <span>Form 27-B</span> / <span>Inventory Catalog</span> / <span>Revision 4.2</span>
+    </p>
+    <h1 class="collection-title">{{ collection.title | upcase }}</h1>
+    <p class="collection-count">
+      Displaying {{ collection.products_count }}
+      {% if collection.products_count == 1 %}item{% else %}items{% endif %}
+      available for requisition
+    </p>
+  </div>
+</section>
+
+<section class="collection-content">
+  <div class="collection-layout">
+    {% if section.settings.enable_filtering %}
+      <aside class="filters-sidebar">
+        {% for filter in collection.filters %}
+          <div class="filter-section">
+            <h3 class="filter-title">{{ filter.label }}</h3>
+            <div class="filter-options">
+              {% for value in filter.values %}
+                <label class="filter-option">
+                  <input
+                    type="checkbox"
+                    class="filter-checkbox"
+                    name="{{ value.param_name }}"
+                    value="{{ value.value }}"
+                    {% if value.active %}checked{% endif %}
+                  >
+                  <span>{{ value.label }}</span>
+                  <span class="filter-count">({{ value.count }})</span>
+                </label>
+              {% endfor %}
+            </div>
+          </div>
+        {% endfor %}
+      </aside>
+    {% endif %}
+
+    <div class="collection-main">
+      <div class="collection-toolbar">
+        <p class="toolbar-left">
+          Showing {{ collection.products.size }} of {{ collection.products_count }} approved items
+        </p>
+        <div class="toolbar-right">
+          <select class="sort-select" onchange="window.location.href = this.value">
+            {% for option in collection.sort_options %}
+              <option
+                value="{{ collection.url }}?sort_by={{ option.value }}"
+                {% if collection.sort_by == option.value %}selected{% endif %}
+              >
+                Sort by: {{ option.name }}
+              </option>
+            {% endfor %}
+          </select>
+        </div>
+      </div>
+
+      <div class="collection-grid">
+        {% paginate collection.products by section.settings.products_per_page %}
+          {% for product in collection.products %}
+            {% render 'product-card', product: product %}
+          {% else %}
+            <div class="collection-empty">
+              <h2>No items pending review</h2>
+              <p>This category has no available products at this time.</p>
+              <a href="{{ routes.all_products_collection_url }}" class="btn btn-primary">
+                View All Items
+              </a>
+            </div>
+          {% endfor %}
+        {% endpaginate %}
+      </div>
+
+      {% paginate collection.products by section.settings.products_per_page %}
+        {% if paginate.pages > 1 %}
+          <nav class="pagination">
+            {% if paginate.previous %}
+              <a href="{{ paginate.previous.url }}" class="pagination-btn">&larr; Previous</a>
+            {% else %}
+              <button class="pagination-btn" disabled>&larr; Previous</button>
+            {% endif %}
+
+            {% for part in paginate.parts %}
+              {% if part.is_link %}
+                <a href="{{ part.url }}" class="pagination-btn">{{ part.title }}</a>
+              {% else %}
+                {% if part.title == paginate.current_page %}
+                  <span class="pagination-btn active">{{ part.title }}</span>
+                {% else %}
+                  <span class="pagination-btn">{{ part.title }}</span>
+                {% endif %}
+              {% endif %}
+            {% endfor %}
+
+            {% if paginate.next %}
+              <a href="{{ paginate.next.url }}" class="pagination-btn">Next &rarr;</a>
+            {% else %}
+              <button class="pagination-btn" disabled>Next &rarr;</button>
+            {% endif %}
+          </nav>
+        {% endif %}
+      {% endpaginate %}
+    </div>
+  </div>
+</section>
+
+{% style %}
+  .collection-header {
+    background-color: var(--color-surface);
+    border-bottom: 2px solid var(--color-border-dark);
+    padding: var(--space-xl) 0;
+  }
+
+  .collection-header-inner {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 0 var(--space-lg);
+  }
+
+  .collection-meta {
+    font-family: var(--font-accent);
+    font-size: 0.6875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--color-text-muted);
+    margin-bottom: var(--space-md);
+  }
+
+  .collection-title {
+    font-family: var(--font-heading);
+    font-size: 2rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    margin-bottom: var(--space-sm);
+  }
+
+  .collection-count {
+    font-family: var(--font-accent);
+    font-size: 0.875rem;
+    color: var(--color-text-muted);
+  }
+
+  .collection-content {
+    padding: var(--space-xl) 0 var(--space-2xl);
+  }
+
+  .collection-layout {
+    display: grid;
+    grid-template-columns: 240px 1fr;
+    gap: var(--space-xl);
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 0 var(--space-lg);
+  }
+
+  .filters-sidebar {
+    position: sticky;
+    top: calc(var(--header-height) + var(--space-lg));
+    align-self: start;
+  }
+
+  .filter-section {
+    margin-bottom: var(--space-lg);
+    padding-bottom: var(--space-lg);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .filter-section:last-child {
+    border-bottom: none;
+  }
+
+  .filter-title {
+    font-family: var(--font-accent);
+    font-size: 0.6875rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-text-muted);
+    margin-bottom: var(--space-md);
+  }
+
+  .filter-options {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+  }
+
+  .filter-option {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    font-family: var(--font-body);
+    font-size: 0.875rem;
+    cursor: pointer;
+  }
+
+  .filter-checkbox {
+    width: 16px;
+    height: 16px;
+    border: 1px solid var(--color-border-dark);
+    background-color: var(--color-surface);
+    appearance: none;
+    cursor: pointer;
+    position: relative;
+  }
+
+  .filter-checkbox:checked {
+    background-color: var(--color-primary);
+  }
+
+  .filter-checkbox:checked::after {
+    content: '✓';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: var(--color-surface);
+    font-size: 0.75rem;
+  }
+
+  .filter-count {
+    font-family: var(--font-accent);
+    font-size: 0.75rem;
+    color: var(--color-text-muted);
+    margin-left: auto;
+  }
+
+  .collection-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--space-lg);
+    padding-bottom: var(--space-md);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .toolbar-left {
+    font-family: var(--font-accent);
+    font-size: 0.75rem;
+    color: var(--color-text-muted);
+  }
+
+  .sort-select {
+    font-family: var(--font-accent);
+    font-size: 0.75rem;
+    padding: var(--space-xs) var(--space-lg) var(--space-xs) var(--space-sm);
+    border: 1px solid var(--color-border);
+    background-color: var(--color-surface);
+    cursor: pointer;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 10 10'%3E%3Cpath fill='%231a1a18' d='M5 7L1 3h8z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 8px center;
+  }
+
+  .collection-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-lg);
+  }
+
+  .collection-empty {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: var(--space-2xl);
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+  }
+
+  .pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: var(--space-sm);
+    margin-top: var(--space-2xl);
+    padding-top: var(--space-xl);
+    border-top: 1px solid var(--color-border);
+  }
+
+  .pagination-btn {
+    font-family: var(--font-accent);
+    font-size: 0.75rem;
+    padding: var(--space-sm) var(--space-md);
+    border: 1px solid var(--color-border);
+    background: none;
+    cursor: pointer;
+    transition: var(--transition-fast);
+    text-decoration: none;
+    color: var(--color-text);
+  }
+
+  .pagination-btn:hover:not(:disabled) {
+    background-color: var(--color-primary);
+    color: var(--color-surface);
+    border-color: var(--color-primary);
+  }
+
+  .pagination-btn.active {
+    background-color: var(--color-primary);
+    color: var(--color-surface);
+    border-color: var(--color-primary);
+  }
+
+  .pagination-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  @media (max-width: 1024px) {
+    .collection-layout {
+      grid-template-columns: 1fr;
+    }
+
+    .filters-sidebar {
+      position: static;
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-lg);
+    }
+
+    .filter-section {
+      flex: 1;
+      min-width: 200px;
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .collection-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .filters-sidebar {
+      display: none;
+    }
+  }
+{% endstyle %}
+
+{% schema %}
+{
+  "name": "Collection Products",
+  "class": "section-collection",
+  "settings": [
+    {
+      "type": "range",
+      "id": "products_per_page",
+      "label": "Products per page",
+      "min": 6,
+      "max": 24,
+      "step": 3,
+      "default": 12
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_filtering",
+      "label": "Enable filtering",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_sorting",
+      "label": "Enable sorting",
+      "default": true
+    }
+  ]
+}
+{% endschema %}

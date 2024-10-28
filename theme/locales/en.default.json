@@ -1,0 +1,83 @@
+{
+  "general": {
+    "skip_to_content": "Skip to content",
+    "404": {
+      "title": "Page not found",
+      "subtext": "The page you're looking for has been moved, deleted, or never existed."
+    }
+  },
+  "accessibility": {
+    "skip_to_content": "Skip to content",
+    "close": "Close",
+    "menu": "Menu",
+    "cart": "Cart",
+    "search": "Search",
+    "loading": "Loading...",
+    "quantity": "Quantity",
+    "increase_quantity": "Increase quantity",
+    "decrease_quantity": "Decrease quantity"
+  },
+  "products": {
+    "product": {
+      "add_to_cart": "Requisition Item",
+      "sold_out": "Requisition Closed",
+      "unavailable": "Unavailable",
+      "price": "Price",
+      "compare_at_price": "Compare at",
+      "sale": "Budget Surplus",
+      "quantity": "Quantity",
+      "sku": "SKU"
+    }
+  },
+  "collections": {
+    "general": {
+      "no_matches": "No items found matching your criteria",
+      "items_count": {
+        "one": "{{ count }} item",
+        "other": "{{ count }} items"
+      }
+    },
+    "sorting": {
+      "title": "Sort by",
+      "featured": "Relevance",
+      "best_selling": "Best Sellers",
+      "title_ascending": "A-Z",
+      "title_descending": "Z-A",
+      "price_ascending": "Price: Low to High",
+      "price_descending": "Price: High to Low",
+      "created_ascending": "Oldest First",
+      "created_descending": "Newest First"
+    }
+  },
+  "cart": {
+    "general": {
+      "title": "Pending Requests",
+      "empty": "No items pending review",
+      "subtotal": "Subtotal",
+      "total": "Total",
+      "taxes_and_shipping_at_checkout": "Tax calculated at checkout",
+      "checkout": "Submit for Approval",
+      "continue_shopping": "Continue Browsing",
+      "remove": "Remove from request",
+      "note": "Special Instructions"
+    }
+  },
+  "customer": {
+    "account": {
+      "title": "Employee Account",
+      "details": "Account Details",
+      "orders": "Requisition History"
+    },
+    "login": {
+      "title": "Employee Login",
+      "email": "Email Address",
+      "password": "Password",
+      "sign_in": "Access Account",
+      "forgot_password": "Forgot Password?"
+    },
+    "register": {
+      "title": "Create Account",
+      "submit": "Register"
+    }
+  }
+}

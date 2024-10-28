@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pending Requests | MANDATORY FUN</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Serif:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/theme.css">
+  <style>
+    /* Cart page specific styles */
+    .cart-page {
+      padding: var(--space-xl) 0 var(--space-2xl);
+    }
+
+    .cart-layout {
+      display: grid;
+      grid-template-columns: 1fr 400px;
+      gap: var(--space-2xl);
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 0 var(--space-lg);
+    }
+
+    /* Cart header */
+    .cart-header {
+      margin-bottom: var(--space-xl);
+    }
+
+    .cart-meta {
+      font-family: var(--font-accent);
+      font-size: 0.6875rem;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--color-text-muted);
+      margin-bottom: var(--space-sm);
+    }
+
+    .cart-title {
+      font-size: 2rem;
+      margin-bottom: var(--space-xs);
+    }
+
+    .cart-subtitle {
+      color: var(--color-text-muted);
+      font-size: 0.9375rem;
+    }
+
+    /* Cart items */
+    .cart-items {
+      border-top: 2px solid var(--color-border-dark);
+    }
+
+    .cart-item {
+      display: grid;
+      grid-template-columns: 120px 1fr auto;
+      gap: var(--space-lg);
+      padding: var(--space-lg) 0;
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    .cart-item-image {
+      background-color: var(--color-surface);
+      border: 1px solid var(--color-border);
+      padding: var(--space-xs);
+    }
+
+    .cart-item-image img {
+      width: 100%;
+      aspect-ratio: 1;
+      object-fit: cover;
+    }
+
+    .cart-item-details {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .cart-item-sku {
+      font-family: var(--font-accent);
+      font-size: 0.625rem;
+      color: var(--color-text-muted);
+      letter-spacing: 0.1em;
+      margin-bottom: var(--space-xs);
+    }
+
+    .cart-item-title {
+      font-family: var(--font-heading);
+      font-size: 1rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      margin-bottom: var(--space-sm);
+    }
+
+    .cart-item-variant {
+      font-family: var(--font-accent);
+      font-size: 0.75rem;
+      color: var(--color-text-muted);
+      margin-bottom: auto;
+    }
+
+    .cart-item-actions {
+      display: flex;
+      align-items: center;
+      gap: var(--space-md);
+      margin-top: var(--space-md);
+    }
+
+    .cart-item-remove {
+      font-family: var(--font-accent);
+      font-size: 0.6875rem;
+      color: var(--color-text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0;
+      transition: var(--transition-fast);
+    }
+
+    .cart-item-remove:hover {
+      color: var(--color-accent);
+    }
+
+    .cart-item-right {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      justify-content: space-between;
+    }
+
+    .cart-item-price {
+      font-family: var(--font-accent);
+      font-size: 1rem;
+      font-weight: 600;
+    }
+
+    .cart-item-line-total {
+      font-family: var(--font-accent);
+      font-size: 0.75rem;
+      color: var(--color-text-muted);
+    }
+
+    /* Quantity in cart */
+    .cart-quantity {
+      display: flex;
+      align-items: center;
+      border: 1px solid var(--color-border);
+    }
+
+    .cart-quantity-btn {
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+      background: var(--color-surface);
+      border: none;
+      cursor: pointer;
+    }
+
+    .cart-quantity-btn:hover {
+      background-color: var(--color-background);
+    }
+
+    .cart-quantity-value {
+      width: 40px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-accent);
+      font-size: 0.8125rem;
+      border-left: 1px solid var(--color-border);
+      border-right: 1px solid var(--color-border);
+      background: var(--color-surface);
+    }
+
+    /* Order summary */
+    .cart-summary {
+      position: sticky;
+      top: calc(var(--header-height) + var(--space-lg));
+      align-self: start;
+    }
+
+    .summary-box {
+      background-color: var(--color-surface);
+      border: 2px solid var(--color-border-dark);
+      padding: var(--space-lg);
+    }
+
+    .summary-header {
+      font-family: var(--font-accent);
+      font-size: 0.6875rem;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--color-text-muted);
+      padding-bottom: var(--space-md);
+      border-bottom: 1px solid var(--color-border);
+      margin-bottom: var(--space-lg);
+    }
+
+    .summary-title {
+      font-size: 1.25rem;
+      margin-bottom: var(--space-lg);
+    }
+
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: var(--space-sm) 0;
+      font-size: 0.9375rem;
+    }
+
+    .summary-label {
+      color: var(--color-text-muted);
+    }
+
+    .summary-value {
+      font-family: var(--font-accent);
+      font-weight: 500;
+    }
+
+    .summary-divider {
+      border-top: 1px solid var(--color-border);
+      margin: var(--space-md) 0;
+    }
+
+    .summary-total {
+      font-size: 1.125rem;
+      font-weight: 600;
+    }
+
+    .summary-total .summary-value {
+      font-size: 1.25rem;
+    }
+
+    .summary-note {
+      font-family: var(--font-accent);
+      font-size: 0.6875rem;
+      color: var(--color-text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-top: var(--space-sm);
+      text-align: right;
+    }
+
+    .summary-shipping-note {
+      background-color: var(--color-highlight);
+      padding: var(--space-sm) var(--space-md);
+      margin: var(--space-lg) 0;
+      font-family: var(--font-accent);
+      font-size: 0.75rem;
+    }
+
+    .summary-actions {
+      margin-top: var(--space-lg);
+    }
+
+    .btn-checkout {
+      width: 100%;
+      padding: var(--space-md);
+      font-size: 1rem;
+      margin-bottom: var(--space-md);
+    }
+
+    .btn-continue {
+      width: 100%;
+      padding: var(--space-sm);
+      font-size: 0.8125rem;
+    }
+
+    .summary-legal {
+      margin-top: var(--space-lg);
+      padding-top: var(--space-lg);
+      border-top: 1px solid var(--color-border);
+      font-family: var(--font-accent);
+      font-size: 0.6875rem;
+      color: var(--color-text-muted);
+      line-height: 1.6;
+    }
+
+    /* Empty cart */
+    .cart-empty {
+      text-align: center;
+      padding: var(--space-2xl);
+      background-color: var(--color-surface);
+      border: 1px solid var(--color-border);
+    }
+
+    .cart-empty-title {
+      font-size: 1.5rem;
+      margin-bottom: var(--space-md);
+    }
+
+    .cart-empty-text {
+      color: var(--color-text-muted);
+      margin-bottom: var(--space-xl);
+    }
+
+    /* Order note */
+    .cart-note {
+      margin-top: var(--space-xl);
+      padding-top: var(--space-lg);
+      border-top: 1px solid var(--color-border);
+    }
+
+    .cart-note-label {
+      font-family: var(--font-accent);
+      font-size: 0.6875rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--color-text-muted);
+      display: block;
+      margin-bottom: var(--space-sm);
+    }
+
+    .cart-note-input {
+      width: 100%;
+      min-height: 100px;
+      padding: var(--space-md);
+      font-family: var(--font-body);
+      font-size: 0.9375rem;
+      border: 1px solid var(--color-border);
+      background-color: var(--color-surface);
+      resize: vertical;
+    }
+
+    .cart-note-input:focus {
+      outline: none;
+      border-color: var(--color-border-dark);
+    }
+
+    .cart-note-input::placeholder {
+      color: var(--color-text-muted);
+    }
+
+    @media (max-width: 1024px) {
+      .cart-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .cart-summary {
+        position: static;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .cart-item {
+        grid-template-columns: 80px 1fr;
+        gap: var(--space-md);
+      }
+
+      .cart-item-right {
+        grid-column: 1 / -1;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        padding-top: var(--space-md);
+        border-top: 1px solid var(--color-border);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page-wrapper">
+
+    <!-- HEADER -->
+    <header class="site-header">
+      <div class="header-inner">
+        <a href="/" class="logo">
+          MANDATORY FUN
+          <span class="logo-sub">Official Merchandise Distribution</span>
+        </a>
+
+        <nav class="nav-main">
+          <ul class="nav-links">
+            <li><a href="/collection.html" class="nav-link">Requisition Items</a></li>
+            <li><a href="#" class="nav-link">Department Catalog</a></li>
+            <li><a href="#" class="nav-link">Policy & FAQ</a></li>
+          </ul>
+
+          <div class="nav-actions">
+            <a href="/cart.html" class="cart-link">Pending (2)</a>
+          </div>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <section class="cart-page">
+        <div class="cart-layout">
+
+          <!-- CART ITEMS -->
+          <div class="cart-main">
+            <header class="cart-header">
+              <p class="cart-meta">Form 27-A | Requisition Request | Status: Pending Review</p>
+              <h1 class="cart-title">PENDING REQUESTS</h1>
+              <p class="cart-subtitle">Review your selections before submitting for approval.</p>
+            </header>
+
+            <div class="cart-items">
+              <!-- Cart Item 1 -->
+              <div class="cart-item">
+                <div class="cart-item-image">
+                  <img src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=200&h=200&fit=crop" alt="Standard Issue Hoodie">
+                </div>
+                <div class="cart-item-details">
+                  <span class="cart-item-sku">SKU: MF-HOD-001</span>
+                  <h3 class="cart-item-title">Standard Issue Hoodie</h3>
+                  <p class="cart-item-variant">Color: Institutional Black / Size: M</p>
+                  <div class="cart-item-actions">
+                    <div class="cart-quantity">
+                      <button class="cart-quantity-btn">−</button>
+                      <span class="cart-quantity-value">1</span>
+                      <button class="cart-quantity-btn">+</button>
+                    </div>
+                    <button class="cart-item-remove">Remove from request</button>
+                  </div>
+                </div>
+                <div class="cart-item-right">
+                  <span class="cart-item-price">$65.00</span>
+                  <span class="cart-item-line-total">Line total: $65.00</span>
+                </div>
+              </div>
+
+              <!-- Cart Item 2 -->
+              <div class="cart-item">
+                <div class="cart-item-image">
+                  <img src="https://images.unsplash.com/photo-1588099768523-f4e6a5679d88?w=200&h=200&fit=crop" alt="Mandatory Coffee Receptacle">
+                </div>
+                <div class="cart-item-details">
+                  <span class="cart-item-sku">SKU: MF-MUG-007</span>
+                  <h3 class="cart-item-title">Mandatory Coffee Receptacle</h3>
+                  <p class="cart-item-variant">Color: Standard White / Size: One Size</p>
+                  <div class="cart-item-actions">
+                    <div class="cart-quantity">
+                      <button class="cart-quantity-btn">−</button>
+                      <span class="cart-quantity-value">2</span>
+                      <button class="cart-quantity-btn">+</button>
+                    </div>
+                    <button class="cart-item-remove">Remove from request</button>
+                  </div>
+                </div>
+                <div class="cart-item-right">
+                  <span class="cart-item-price">$18.00</span>
+                  <span class="cart-item-line-total">Line total: $36.00</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Order notes -->
+            <div class="cart-note">
+              <label class="cart-note-label" for="order-note">Special Instructions (Optional)</label>
+              <textarea
+                class="cart-note-input"
+                id="order-note"
+                placeholder="Add any special requests or notes for HR processing. E.g., 'Please ship to home office' or 'Gift wrap for employee appreciation'"
+              ></textarea>
+            </div>
+          </div>
+
+          <!-- ORDER SUMMARY -->
+          <div class="cart-summary">
+            <div class="summary-box">
+              <p class="summary-header">Requisition Summary | 2 Items</p>
+              <h2 class="summary-title">ORDER TOTAL</h2>
+
+              <div class="summary-row">
+                <span class="summary-label">Subtotal</span>
+                <span class="summary-value">$101.00</span>
+              </div>
+
+              <div class="summary-row">
+                <span class="summary-label">Shipping</span>
+                <span class="summary-value">$0.00</span>
+              </div>
+
+              <div class="summary-shipping-note">
+                <strong>FREE SHIPPING</strong> — Order qualifies for complimentary expedited processing
+              </div>
+
+              <div class="summary-row">
+                <span class="summary-label">Tax (estimated)</span>
+                <span class="summary-value">$8.08</span>
+              </div>
+
+              <div class="summary-divider"></div>
+
+              <div class="summary-row summary-total">
+                <span>Total</span>
+                <span class="summary-value">$109.08</span>
+              </div>
+              <p class="summary-note">Includes all applicable fees</p>
+
+              <div class="summary-actions">
+                <button class="btn btn-primary btn-checkout btn-stamp">
+                  SUBMIT FOR APPROVAL
+                </button>
+                <a href="/collection.html" class="btn btn-secondary btn-continue">
+                  Continue Browsing
+                </a>
+              </div>
+
+              <p class="summary-legal">
+                By submitting this requisition, you acknowledge that all items are subject to availability
+                and HR approval. <span class="redacted">Your purchase history is recorded.</span>
+                Estimated delivery: 3-5 business days after approval.
+              </p>
+            </div>
+          </div>
+
+        </div>
+      </section>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="site-footer">
+      <div class="footer-inner">
+        <div class="footer-grid">
+          <div class="footer-brand">
+            <p class="footer-logo">MANDATORY FUN</p>
+            <p class="footer-tagline">
+              Official merchandise distribution center. Your participation has been noted and appreciated.
+            </p>
+          </div>
+
+          <div class="footer-column">
+            <h4>NAVIGATION</h4>
+            <nav class="footer-links">
+              <a href="/collection.html" class="footer-link">All Products</a>
+              <a href="#" class="footer-link">New Arrivals</a>
+              <a href="#" class="footer-link">Best Sellers</a>
+              <a href="#" class="footer-link">On Sale</a>
+            </nav>
+          </div>
+
+          <div class="footer-column">
+            <h4>INFORMATION</h4>
+            <nav class="footer-links">
+              <a href="#" class="footer-link">About Us</a>
+              <a href="#" class="footer-link">Contact HR</a>
+              <a href="#" class="footer-link">Bulk Orders</a>
+              <a href="#" class="footer-link">FAQ</a>
+            </nav>
+          </div>
+
+          <div class="footer-column">
+            <h4>POLICY</h4>
+            <nav class="footer-links">
+              <a href="#" class="footer-link">Shipping Info</a>
+              <a href="#" class="footer-link">Returns (Form 27-C)</a>
+              <a href="#" class="footer-link">Privacy Policy</a>
+              <a href="#" class="footer-link">Terms of Service</a>
+            </nav>
+          </div>
+        </div>
+
+        <div class="footer-bottom">
+          <p>&copy; 2024 Mandatory Fun. A Division of <span class="redacted">Definitely Real Corp</span>.</p>
+          <div class="footer-legal">
+            <span>Dropbox</span>
+            <span>GitHub</span>
+            <span>tickd</span>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+  </div>
+
+  <script src="/js/preview.js"></script>
+</body>
+</html>

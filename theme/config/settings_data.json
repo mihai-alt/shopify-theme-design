@@ -1,0 +1,17 @@
+{
+  "current": {
+    "color_primary": "#1a1a18",
+    "color_secondary": "#2c2c28",
+    "color_background": "#f7f5f0",
+    "color_surface": "#fffef9",
+    "color_text": "#1a1a18",
+    "color_text_muted": "#6b6860",
+    "color_accent": "#c41e3a",
+    "color_sale": "#c41e3a",
+    "color_highlight": "#fff3cd",
+    "color_border": "#d4d0c8",
+    "color_border_dark": "#1a1a18",
+    "cart_type": "page",
+    "cart_notes_enable": true
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "type": "footer",
+  "name": "Footer group",
+  "sections": {
+    "footer": {
+      "type": "footer",
+      "settings": {
+        "brand_name": "MANDATORY FUN",
+        "tagline": "Official merchandise distribution center. Your participation has been noted and appreciated.",
+        "show_redacted": true,
+        "redacted_text": "Compliance rate: 94%",
+        "show_brands": true
+      }
+    }
+  },
+  "order": ["footer"]
+}
